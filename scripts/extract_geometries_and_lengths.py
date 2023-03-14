@@ -38,16 +38,6 @@ def extract_geometries_and_lengths(vector_layer, sort_field):
         attrs = feature.attributes()
         id = feature.id()
         geom = feature.geometry()
-        geomSingleType = QgsWkbTypes.isSingleType(geom.wkbType())
-
-        if geom.type() == QgsWkbTypes.LineGeometry:
-            if geomSingleType:
-                x = geom.asPolyline()
-                line_geometries.append(x)
-                line_lengths.append(geom.length())
-            else:
-                x = geom.asMultiPolyline()
-                for line in x:
-                    line_geometries += [line for line in x]
-                    line_lengths += [geom.length() for line in x]
+        line_geometries.append(geom)
+        line_lengths.append(geom.length())
     return line_geometries, line_lengths
