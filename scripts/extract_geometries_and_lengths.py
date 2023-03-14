@@ -1,10 +1,10 @@
-def extract_geometries_and_lengths(layer, sort_field):
+def extract_geometries_and_lengths(vector_layer, sort_field):
     '''
     Extracts Linestring or Multilinestring geometries and their lengths from a vector layer.
 
     Parameters:
     ----------
-    layer: QgsVectorLayer
+    vector_layer: QgsVectorLayer
         The vector layer to extract the information from.
     sort_field: str
         The field to order the features by.
@@ -23,16 +23,16 @@ def extract_geometries_and_lengths(layer, sort_field):
     '''
 
     # Check if the layer is a line vector layer
-    if layer.geometryType() != QgsWkbTypes.LineGeometry:
+    if vector_layer.geometryType() != QgsWkbTypes.LineGeometry:
         print('Warning: the layer is not a line vector layer.')
     # create a QgsFeatureRequest object and set the sort order
     request = QgsFeatureRequest().addOrderBy(sort_field, ascending=True)
 
     # get all features sorted by the specified field
-    features = layer.getFeatures(request)
+    features = vector_layer.getFeatures(request)
 
-    geometries = []
-    lengths =[]
+    line_geometries = []
+    line_lengths =[]
     # loop through the features
     for feature in features:
         attrs = feature.attributes()
@@ -43,11 +43,11 @@ def extract_geometries_and_lengths(layer, sort_field):
         if geom.type() == QgsWkbTypes.LineGeometry:
             if geomSingleType:
                 x = geom.asPolyline()
-                geometries.append(x)
-                lengths.append(geom.length())
+                line_geometries.append(x)
+                line_lengths.append(geom.length())
             else:
                 x = geom.asMultiPolyline()
                 for line in x:
-                    geometries += [line for line in x]
-                    lengths += [geom.length() for line in x]
-    return geometries, lengths
+                    line_geometries += [line for line in x]
+                    line_lengths += [geom.length() for line in x]
+    return line_geometries, line_lengths
