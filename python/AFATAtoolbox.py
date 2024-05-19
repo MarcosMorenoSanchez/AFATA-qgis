@@ -386,7 +386,7 @@ class AFATAtool(QgsProcessingAlgorithm):
             return rasterAverage
 
         def GetIntersectionPointOfLines(x1, y1, x2, y2, x3, y3, x4, y4):
-            """ :: Credits for this algorithm to PaulBrocks1988
+            """ 
             Intersection point of two line segments in 2 dimensions
 
             params:
